@@ -2,7 +2,21 @@
 # on your computer, run in this directory
 # mkdocs serve
 
-site_name: 'Kubelake - K8S Data Platform workshop'
+site_name: 'KubeLake - K8S Data Platform workshop'
 theme:
-  name: readthedocs
-
+  name: material
+markdown_extensions:
+    - attr_list
+    - md_in_html
+extra:
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/esolutions/
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/esolutionstech
+    - icon: fontawesome/brands/facebook
+      link: https://www.facebook.com/esolutions.tech/
+    - icon: fontawesome/brands/instagram
+      link: https://www.instagram.com/esolutions.tech/
+    - icon: fontawesome/brands/github
+      link: https://github.com/eSolutionsTech

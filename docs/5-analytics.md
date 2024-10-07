@@ -8,4 +8,7 @@ with SQL, Scala, Python, R and more. See more at [https://zeppelin.apache.org](h
 User Interface URL is something like `https://zeppelin.<<domain>>`. 
 
 
-![notebook](images/notebook.png)
+![notebook](img/notebook.png)
+
+
+<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

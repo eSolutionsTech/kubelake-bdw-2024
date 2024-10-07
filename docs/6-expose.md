@@ -14,4 +14,6 @@ Note: by default, two connections are defined:
 - lakehouse - delta lake connection.
 - kafka.
 
-![trino](images/trino.png)
+![trino](img/trino.png)
+
+<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

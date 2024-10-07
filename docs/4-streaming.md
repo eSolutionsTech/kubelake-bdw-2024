@@ -212,3 +212,6 @@ spec:
       - name: AWS_SECRET_ACCESS_KEY
         value: <Your-MinIO-SecretKey>
 ```
+
+
+<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

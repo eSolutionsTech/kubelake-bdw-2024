@@ -10,4 +10,6 @@ User Interface URL is something like `https://superset.<<domain>>`.
 By default, a new database named `lakehouse-db` is created and connected to the Trino
 _lakehouse_ connection.
 
-![superset](images/superset.png)
+![superset](img/superset.png)
+
+<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

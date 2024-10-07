@@ -4,18 +4,18 @@
 
 MinIO is a high-performance Object Storage compatible with S3. See more at [https://min.io](https://min.io).
 
-### Prerequisites  
-- MinIO Operator must be installed. 
-
-NOTE: For Minio install, you can consult Esolutions's Kubelake, 
+NOTE: For Minio install, you can consult Esolutions's Kubesol, 
 a free and open-source project:
 https://github.com/eSolutionsTech/kubesol/blob/main/docs/components/minio.md; 
 
-### Usage
+### Usage (for the hand's on stage)
 A bucket is already created:
 
 - **datalake**: used to store data.
 
 User Interface URL is something like `https://storage.<<domain>>`.
 
-![storage](images/storage.png)
+![storage](img/storage.png)
+
+
+<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>
