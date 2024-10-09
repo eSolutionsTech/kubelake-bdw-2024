@@ -11,5 +11,3 @@ By default, a new database named `lakehouse-db` is created and connected to the 
 _lakehouse_ connection.
 
 ![superset](img/superset.png)
-
-<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

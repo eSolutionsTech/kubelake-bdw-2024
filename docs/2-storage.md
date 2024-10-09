@@ -17,5 +17,3 @@ User Interface URL is something like `https://storage.<<domain>>`.
 
 ![storage](img/storage.png)
 
-
-<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

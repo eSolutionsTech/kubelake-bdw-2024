@@ -38,7 +38,7 @@ It provides a flexible and scalable infrastructure for storing, processing and a
 - metrics-server
 - public DNS & external reverse-proxy   
 
-NOTE: For guidance on installation and usage, you can consult Esolutions's Kubelake, 
+NOTE: For guidance on installation and usage, you can consult Esolutions's Kubesol, 
 a free and open-source project: https://github.com/eSolutionsTech/kubesol/blob/main/docs/README.md
 
 ## Included modules in Kubelake (bird's eye view)
@@ -60,4 +60,3 @@ Let's go behind the curtains a little bit and see the modules installed.
 
 [Workshop](workshop.md)
 
-<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

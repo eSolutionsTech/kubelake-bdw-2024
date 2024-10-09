@@ -5,9 +5,11 @@
 site_name: 'KubeLake - K8S Data Platform workshop'
 theme:
   name: material
+  logo: img/logo.png
 markdown_extensions:
     - attr_list
     - md_in_html
+    - admonition
 extra:
   social:
     - icon: fontawesome/brands/linkedin

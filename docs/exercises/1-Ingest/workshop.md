@@ -1,7 +1,9 @@
 # Exercise 1: Data Ingestion with Apache NiFi
 
 ### Objective:
-Use Apache NiFi to ingest data from a source (S3 bucket in our case), transform it, and store somewhere else(another S3 bucket in our case) .
+Use Apache NiFi to ingest data from a source (S3 bucket in our case), transform it, and store somewhere else(another S3 bucket in our case).
+
+[Nifi](https://nifi.dev1.kubelake.com)
 
 ## Introduction to Apache NiFi
 
@@ -19,6 +21,47 @@ Here are some key benefits of NiFi:
 In this exercise, let's see how to configure NiFi to read data from an MinIO bucket (S3-compatible), 
 perform minor modifications on JSON data, and write the processed data back to another MinIO bucket.
 
+The input data consists of random generated multi-line .json files with information about
+a certain stock in a day (lets say APPLE) and if in that day
+
+- if there were any Events
+- the Event type (Social/Governance/Climate)
+- the impact factor
+
+Example:
+
+
+      [{
+      "date": "2023-12-04",
+      "open": 108.4,
+      "high": 115.07,
+      "low": 105.15,
+      "close": 110.53,
+      "volume": 1728881,
+      "event": "Mass workforce strike",
+      "event_type": "Social Event",
+      "impact_factor": -0.04
+      }..]
+
+A day with no events would look like this
+
+      [{
+      "date": "2023-12-09",
+      "open": 105.0,
+      "high": 110.65,
+      "low": 106.97,
+      "close": 107.09,
+      "volume": 3470925,
+      "event": null,
+      "event_type": null,
+      "impact_factor": 0
+      }..]
+
+!!! info "Fair Warning PSA"
+      This exercise exceeds to a certain extent what is usually recommended to do with Nifi (Extract / Load).
+      We are going to modify the data a bit (Transform) just to play around with Nifi's capabilities.
+      For Big Data volumes any transformation should be done outside Nifi (although even Nifi can scale as it runs in cluster mode)
+
 ### Exercise Goals:
 
 - Fetch JSON data from an bucket (.json files)
@@ -32,7 +75,7 @@ perform minor modifications on JSON data, and write the processed data back to a
 
 ### Prerequisites:
 1. Apache NiFi installed and running (already done).
-2. Access a data source (data is already saved in MinIO, but we could also test a public API).
+2. Access a data source (data is already saved in MinIO, but we could also test a public API if we want).
 3. Basic knowledge of JSON format.
 
 ### NiFi Overview
@@ -50,7 +93,7 @@ In this exercise, we'll use the following NiFi processors:
 - **PutS3Object**: To save the modified data to the MinIO bucket.
 
 ### NiFi teacher pass-through DEMO
-[Nifi](https://nifi.{domain}.kubelake.com)
+[Nifi](https://nifi.dev1.kubelake.com)
 
 
 ## DIY the rest
@@ -63,19 +106,19 @@ In this exercise, we'll use the following NiFi processors:
 
 ## Step 2: Fetch Data from S3
 
+
 ### Configure ListS3 Processor:
 1. Drag and drop the **ListS3** processor onto the NiFi canvas.
 2. Right-click on the processor and select **Configure**.
 3. In the **Properties** tab:
      - Set the **Bucket Name** to the name of the MinIO bucket (*datalake*)
-     - Configure **Region** to match the region of your MinIO bucket (*EU Paris*)
+     - Configure **Region** to match the region of your MinIO bucket (*EU Frankfurt*)
      - Set your **MinIO Credentials** (select the *CredentialsProviderControllerService* already connected to MinIO).
      - Set the Endpoint Override URL because this processor usually connects to S3, but now we are using it to connect to MinIO (*http://minio.kubelake-storage*).
-     - Set the **Prefix** to where our files are (*/ingest*)
+     - Set the **Prefix** to where our files are (*ingest/esg_stock_data*)
 4. This processor will list all objects in the specified MinIO bucket.
 5. Click right to run it once and to run it again click right -> view state -> clear state, then you can run it again
    (this processor stores the timestamp of the read files so that we can keep it running forever and just read new or updated files)
-
 
 ### Configure FetchS3Object Processor:
 1. Drag and drop the **FetchS3Object** processor.
@@ -90,7 +133,7 @@ In this exercise, we'll use the following NiFi processors:
 1. Drag and drop the **SplitJson** processor.
 2. Connect the **success** relationship from **FetchS3Object** to **SplitJson**.
 3. The **failure** relationship we can redirect to the same SplitJson processor (if our relationship fails we can sometimes try again, right??)
-4. Set JsonPath Expression to **$.**
+4. Set JsonPath Expression to **$.***
 
 ## Step 4: Modify the JSON Data
 
@@ -105,7 +148,7 @@ In this exercise, we'll use the following NiFi processors:
    {
       "operation": "default",
       "spec": {
-         "newField": "NiFi is awesome!"
+         "processed_by": "demo_user"
       }
    }
 ]
@@ -124,7 +167,7 @@ In this exercise, we'll use the following NiFi processors:
      - Configure **Region** to *EU Paris* (or set it to Use 's3.region' Attribute)
      - Set your **MinIO Credentials** to the *CredentialsProviderControllerService* 
      - Set the Endpoint Override to *http://minio.kubelake-storage*.
-     - The **Object Key** will be different, set it to /silver/{your_name_or_project_name}/raw/${UUID()}.json
+     - The **Object Key** will be different, set it to /bronze/{your_name_or_project_name}/2024-10-15/${UUID()}.json
 
 ---
 
@@ -160,5 +203,3 @@ In this exercise, we have (hopefully) learned how to:
 - Store the modified data in a new location.
 
 Happy NiFi-ing!
-
-<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

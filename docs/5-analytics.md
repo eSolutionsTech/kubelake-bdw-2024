@@ -10,5 +10,3 @@ User Interface URL is something like `https://zeppelin.<<domain>>`.
 
 ![notebook](img/notebook.png)
 
-
-<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

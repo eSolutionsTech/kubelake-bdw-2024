@@ -7,10 +7,8 @@ See more at [https://nifi.apache.org](https://nifi.apache.org).
 We'll go into more detail at the exercise phase.
 
 ### Usage
-The User Interface URL is something like `https://nifi.<<domain>>`. 
+The User Interface URL is something like `https://nifi.dev1.kubelake.com`. 
 
 ![nifi](img/nifi.png)
 
-
-<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>
 

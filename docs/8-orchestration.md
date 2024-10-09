@@ -10,5 +10,3 @@ See more at [https://airflow.apache.org](https://airflow.apache.org)
 User Interface URL is something like `https://airflow.<<domain>>`.
 
 ![airflow](img/airflow.png)
-
-<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

@@ -6,9 +6,7 @@ Connecting
 ### Steps:
 1. **Clone a GitHub Repository** containing exercises for:
     - Ingest -> Apache NiFi
-    - Processing ->Apache Spark with Zeppelin
     - Storage -> MinIO (for S3-compatible storage)
+    - Processing -> Apache Spark with Zeppelin
     - Visualisation -> Zeppelin and Superset
 
-
-<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

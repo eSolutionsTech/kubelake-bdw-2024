@@ -15,5 +15,3 @@ Note: by default, two connections are defined:
 - kafka.
 
 ![trino](img/trino.png)
-
-<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>

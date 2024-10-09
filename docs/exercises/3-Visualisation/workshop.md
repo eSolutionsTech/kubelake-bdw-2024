@@ -11,8 +11,9 @@ In this plan, we will:
 
 ### Prerequisites
 
-- **Zeppelin notebook** is configured with Spark to access the processed data stored in **MinIO**.
-- **Apache Superset** is installed and configured with access to MinIO Delta tables.
+- **Zeppelin notebook** is configured with Spark to access the processed data stored in **MinIO** ([Zeppelin](https://zeppelin.dev1.kubelake.com))
+- **Apache Superset** is installed and configured with access to MinIO Delta tables([Superset](https://superset.dev1.kubelake.com))
+
 
 ---
 
@@ -22,14 +23,8 @@ Zeppelin has built-in charting capabilities for basic visualizations.
 After running the aggregation or a query, switch the result to visualizations using Zeppelin's built-in tools (z.show)
 You can select from pie charts, bar charts, scatter plots, etc.
 
-Example for Chart Visualization:
-
 After performing the aggregation:
-
 Click on Bar Chart, Line Chart, or Pie Chart options on the Zeppelin result window.
-Select the columns you want to visualize (e.g., group by and sum column).
-Adjust chart settings as needed.
-
 
 Let's visualise stock Price over Time (as a bar chart)
 
@@ -41,42 +36,43 @@ z.show(stockPriceOverTime)
 
 ## Step 2: Visualize Data Using Apache Superset
 
-### Step 2.1: Create Dashboards in Superset
+Now, let's create visualizations and dashboards in Superset.
+#### 2.1 Create Charts to Visualize Key Metrics
 
-Now, let's create visualizations and dashboards in Superset for monitoring the key financial metrics and real-time processing results.
-#### 2.2.1 Create Charts to Visualize Key Metrics
+Let's log together into [Superset](https://superset.dev1.kubelake.com)
 
- Log into Superset:
-     Access the Superset UI using the designated URL.
+We'll use the SQL Lab to run some queries on our data 
 
- Create a New Chart:
-     From the Superset homepage, click on Charts and then + Chart.
-     Select the MinIO Delta table as your data source.
-     Choose the appropriate chart type (e.g., bar chart, pie chart, line chart).
-     Define the necessary metrics and dimensions (e.g., sum of a numeric column grouped by category).
+- database **trino-lakehouse**
+- schema **default**
+- table **your_delta_table_previously_created**
 
- Customize the Chart:
-     Add necessary filters, group by dimensions, and select metrics.
-     Set up visual properties like color, labels, and axis settings.
-     Preview the chart to ensure the data is displayed correctly.
+DIY the Rest
 
-Example of Financial Metrics:
 
-For example, to visualize a financial metric like total revenue by region:
+Create the dataset on our data
 
- - Choose a Bar Chart.
- - Select the Delta table.
- - Set Region as the x-axis and Sum(Revenue) as the metric.
- - Adjust the chart settings and labels.
+- on the Datasets -> new Dataset
+- select our database **trino-lakehouse** and schema **default**
+- select  **your_delta_table_previously_created**
+- create dataset and chart
 
+Create the chart on our dataset
+
+- Choose a Bar Chart.
+- Set **date**  as the x-axis and **Sum(close)** as the metric.
+- Add event_type as Dimension
+- Adjust the chart settings and labels.
+
+
+We should have a chart now on which we can see how the price evolved, and also we can filter by the event type.
+![chart](/img/stock_price_chart.png)
 
 ## Summary
 
 In this step, we learned how to:
 
-- Use Zeppelin for quick, ad-hoc visualizations by loading data from MinIO and using its built-in charting capabilities.
+- Use Zeppelin for quick, ad-hoc visualizations by loading data from our data lake and using its built-in charting capabilities.
 - Use Apache Superset to create more formal dashboards that visualize key metrics.
 
 Happy visualizing!
-
-<img src="/img/simbol_esolutions.png" alt="Logo" style="float: right; width: 150px;"/>
