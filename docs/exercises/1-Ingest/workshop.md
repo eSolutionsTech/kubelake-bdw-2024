@@ -96,7 +96,7 @@ In this exercise, we'll use the following NiFi processors:
 [Nifi](https://nifi.dev1.kubelake.com)
 
 
-## DIY the rest
+## DIY the rest (20 min / 35 min)
 
 - Log into [Nifi](https://nifi.dev1.kubelake.com)
 - credentials : demo@kubelake.com - ask me for the password
@@ -180,7 +180,10 @@ In this exercise, we'll use the following NiFi processors:
 1. Connect the **success** relationship of each processor as outlined above.
 2. Right-click on each Nifi processor and select **Start**.
 3. NiFi will now fetch files from the MinIO bucket, transform the JSON, and save the modified files in another MinIO location.
-
+4. If for any reason you fail to get the running flow, you can drag and drop a template with the running flow from the
+left top part of the nifi interface (Template -> Drag and Drop -> Choose Demo Ingest)
+5. Then just go through the flow and alter the MinIO path and run the flow
+6. 
 ### Monitor Data Flow:
 
 1. Use NiFi’s built-in **Data Provenance** to track the data's journey from start to finish.
