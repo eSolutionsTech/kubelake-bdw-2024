@@ -32,7 +32,7 @@ We will also model the data using a medallion architecture and group the data in
 ## Exercise 4: Putting It All Together
 [Final](exercises/4-Final/workshop.md)
 
-Here’s a visual representation of the workshop pipeline:
+Here’s a representation of the workshop pipeline:
 
 ```plaintext
 Data API --> NiFi --> Minio --> Spark --> Minio --> Superset

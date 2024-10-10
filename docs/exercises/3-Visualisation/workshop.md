@@ -66,7 +66,7 @@ Create the chart on our dataset
 
 
 We should have a chart now on which we can see how the price evolved, and also we can filter by the event type.
-![chart](/img/stock_price_chart.png)
+![chart](../img/stock_price_chart.png)
 
 ## Summary
 
