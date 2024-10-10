@@ -2,8 +2,9 @@
 
 ### Objective:
 Let's see how all the components combine to create a fully functional data pipeline.
+We could also see how a streaming usecase would be done
 
-![lifecycle](/img/lifecycle.png)
+![lifecycle](../../img/lifecycle.png)
 
 
 

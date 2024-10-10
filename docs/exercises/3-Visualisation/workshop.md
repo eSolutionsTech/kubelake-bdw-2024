@@ -39,7 +39,7 @@ z.show(stockPriceOverTime)
 Now, let's create visualizations and dashboards in Superset.
 #### 2.1 Create Charts to Visualize Key Metrics
 
-Let's log together into [Superset](https://superset.dev1.kubelake.com)
+Let's log together into [Superset](https://superset.dev1.kubelake.com) then DIY the rest (10 - 20 min)
 
 - credentials ->  demo@kubelake.com : ask me for the password
 

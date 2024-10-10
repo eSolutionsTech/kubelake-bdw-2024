@@ -25,7 +25,7 @@ In this exercise, you will learn how to:
 4. **Delta Lake** dependencies configured in your Spark environment (already done).
 
 ---
-### Zeppelin teacher pass-through DEMO then DIY for the REST
+### Zeppelin teacher pass-through DEMO then DIY for the REST (10 - 20 min)
 
 [Zeppelin](https://zeppelin.dev1.kubelake.com)
 
