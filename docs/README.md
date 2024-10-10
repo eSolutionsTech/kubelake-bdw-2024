@@ -20,3 +20,7 @@ We build, implement and develop big data solutions for key market verticals, usi
 
 ## Why are we here today?
 To talk about -> [KubeLake](0-kubeLake.md)
+
+You can go to the Github repo to follow along:
+
+[https://github.com/eSolutionsTech/kubelake-bdw-2024](https://github.com/eSolutionsTech/kubelake-bdw-2024)
