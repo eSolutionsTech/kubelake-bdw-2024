@@ -25,7 +25,8 @@ In this exercise, you will learn how to:
 4. **Delta Lake** dependencies configured in your Spark environment (already done).
 
 ---
-### Zeppelin teacher pass-through DEMO
+### Zeppelin teacher pass-through DEMO then DIY for the REST
+
 [Zeppelin](https://zeppelin.dev1.kubelake.com)
 
 
@@ -92,7 +93,7 @@ z.show(eventFrequency)
 To save the data in Delta format back to MinIO, you need to configure Spark to write in Delta Lake format.
 Why Delta?
 
-Saving data in Delta format (on top of Parquet)  makes managing and working with large amounts of data: 
+Saving data in Delta format makes managing and working with large amounts of data: 
 
 - easier
 - faster
@@ -106,11 +107,10 @@ Saving data in Delta format (on top of Parquet)  makes managing and working with
 // Save the aggregated results as Delta Table
 val stockPriceOverTime = df.select("date", "close")
 // saveAsTable so that we can use this later with Hive -> Trino
-stockPriceOverTime.write.format("delta").mode("overwrite").saveAsTable("stockPriceOverTime")
+stockPriceOverTime.write.format("delta").mode("overwrite").saveAsTable("yourNameStockPriceOverTime")
 ```
 
 This will store the results as a Delta Table in the specified MinIO path.
-
 
 ## Step 6: Verify the Saved Data in MinIO
 
@@ -119,7 +119,7 @@ the metadata store
 ``` scala
 
 %sql
-select * from stockPriceOverTime limit 5
+select * from yourNameStockPriceOverTime limit 5
 ```
 
 
