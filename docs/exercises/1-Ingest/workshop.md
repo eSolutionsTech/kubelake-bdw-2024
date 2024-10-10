@@ -98,6 +98,8 @@ In this exercise, we'll use the following NiFi processors:
 
 ## DIY the rest
 
+- Log into [Nifi](https://nifi.dev1.kubelake.com)
+- credentials : demo@kubelake.com - ask me for the password
 
 ## Step 1: Create your own working environment 
 1. Drag and drop a new process group from the left (4th button to the right of the logo)
@@ -189,6 +191,8 @@ In this exercise, we'll use the following NiFi processors:
 ## Step 7: Review and Stop running processors
 
 1. Review the processed data in your MinIO bucket.
+- Log into [MinIO]( https://storage.dev1.kubelake.com)
+- credentials ->  demo@kubelake.com : ask me for the password
 2. Stop the NiFi flow when you’re finished (click right on the canvas and STOP)
 
 ---

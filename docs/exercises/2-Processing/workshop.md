@@ -31,7 +31,7 @@ In this exercise, you will learn how to:
 
 ## Step 1: Set Up Your Zeppelin Notebook
 
-1. Open Zeppelin and create a new notebook.
+1. Open Zeppelin and create a new notebook with our name (no credentials required).
 2. Set the interpreter to **spark**.
 3. We will go to the next step to test access to the MinIO bucket to read our data files.
 
@@ -90,14 +90,23 @@ z.show(eventFrequency)
 ## Step 5: Save Aggregated Results as Delta Table in MinIO
 
 To save the data in Delta format back to MinIO, you need to configure Spark to write in Delta Lake format.
+Why Delta?
+
+Saving data in Delta format (on top of Parquet)  makes managing and working with large amounts of data: 
+
+- easier
+- faster
+- more reliable (preventing issues like incomplete updates or data getting mixed up)
+- great for real-time analytics or machine learning tasks ( update or delete specific data efficiently )
+- benefit of time-travel (you can track changes and even go back to earlier versions of your data if needed)
+
 
 ``` scala
 
-// Save the aggregated results as Delta Table format in MinIO
-val outputPath = s"s3a://datalake/silver/{your_name_or_project_name}/result"
+// Save the aggregated results as Delta Table
 val stockPriceOverTime = df.select("date", "close")
-// saveAsTable so that we can use this later with Hive / Trino
-stockPriceOverTime.write.format("delta").mode("ovveride").saveAsTable("stockPriceOverTime")
+// saveAsTable so that we can use this later with Hive -> Trino
+stockPriceOverTime.write.format("delta").mode("overwrite").saveAsTable("stockPriceOverTime")
 ```
 
 This will store the results as a Delta Table in the specified MinIO path.
@@ -105,17 +114,18 @@ This will store the results as a Delta Table in the specified MinIO path.
 
 ## Step 6: Verify the Saved Data in MinIO
 
-After saving the data, you can verify the output by using the spark.read function to load and inspect the Delta Table.
+After saving the data, you can verify the output by using the %sql interpretor which will pick-up our Delta Table from
+the metadata store
 ``` scala
 
-// Verify the saved Delta Table
-val deltaDF = spark.read.format("delta").load(outputPath)
+%sql
+select * from stockPriceOverTime limit 5
 ```
 
 
 ## Summary
 
-In this exercise, you learned how to:
+In this exercise, we learned how to:
 
 - Configure Spark to read data from MinIO. 
 - Perform simple analysis using Spark’s DataFrame API.

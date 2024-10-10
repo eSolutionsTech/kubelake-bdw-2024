@@ -1,11 +1,11 @@
 # eSolutions
 
 ## Who are we?
-- Lucian Neghina ->  Head of Data Engineering // eSolutions
+- [Lucian Neghina](https://www.linkedin.com/in/nflucian) ->  Head of Data Engineering // eSolutions
 
-- Viorel Bibiloiu -> Big Data Architect // eSolutions
+- [Viorel Bibiloiu](https://www.linkedin.com/in/viorel-bibiloiu-383a17ab/) -> Big Data Architect // eSolutions
 
-- eSolutions -> a technology company developing integrated, complex and secure solutions, with a focus on improving the business processes that stand behind the software.
+- [eSolutions](https://www.esolutions.tech/) -> a technology company developing integrated, complex and secure solutions, with a focus on improving the business processes that stand behind the software.
 
 We build, implement and develop big data solutions for key market verticals, using microservices architectures for apps that are both stable and scalable.
 
@@ -21,6 +21,6 @@ We build, implement and develop big data solutions for key market verticals, usi
 ## Why are we here today?
 To talk about -> [KubeLake](0-kubeLake.md)
 
-You can go to the Github repo to follow along with this workshop:
+You can visit the Github repo to follow along with this workshop:
 
 [https://github.com/eSolutionsTech/kubelake-bdw-2024](https://github.com/eSolutionsTech/kubelake-bdw-2024)

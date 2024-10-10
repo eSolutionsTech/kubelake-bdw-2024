@@ -41,6 +41,8 @@ Now, let's create visualizations and dashboards in Superset.
 
 Let's log together into [Superset](https://superset.dev1.kubelake.com)
 
+- credentials ->  demo@kubelake.com : ask me for the password
+
 We'll use the SQL Lab to run some queries on our data 
 
 - database **trino-lakehouse**
@@ -60,7 +62,7 @@ Create the dataset on our data
 Create the chart on our dataset
 
 - Choose a Bar Chart.
-- Set **date**  as the x-axis and **Sum(close)** as the metric.
+- Set **date**  as the x-axis and **sum(close)** as the metric.
 - Add event_type as Dimension
 - Adjust the chart settings and labels.
 
