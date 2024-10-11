@@ -2,9 +2,10 @@
 
 ## Overview:
 
-This workshop will guide participants through setting up a scalable data pipeline using a combination of Apache NiFi, Spark (through Zeppelin), MinIO,  and Superset. 
+This workshop will guide us through setting up a 
+data pipeline using a combination of Apache NiFi, Spark (through Zeppelin), MinIO,  and Superset. 
 
-All component are already installed using K8s, allowing participants to build a complete ETL (Extract, Transform, Load) pipeline.
+All component are already installed using K8s, allowing us to build a complete ETL (Extract, Transform, Load) pipeline.
 
 
 We will also model the data using a medallion architecture and group the data into different zones.

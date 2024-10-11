@@ -4,15 +4,54 @@
 
 ## Introduction to Apache Spark
 
-Apache Spark is a powerful, open-source data processing engine designed for large-scale data processing.
-It provides an easy-to-use API for distributed data processing, making it suitable for tasks like batch processing,
-real-time streaming, machine learning, and graph processing.
+Apache Spark is a powerful, open-source data processing engine designed for large-scale data processing. 
+It offers a unified engine that efficiently processes data at scale across a cluster of machines, making it ideal for tasks such as batch processing, real-time data streaming, machine learning, and graph processing.
 
-In this exercise, you will learn how to:
+### Key Features of Apache Spark:
+1. **Unified Data Processing**:
+   Spark supports multiple workloads like batch processing, real-time streaming, SQL queries,
+machine learning, and graph computation — all within a single, cohesive framework.
+This means you can build complex big data pipelines that span multiple types of data processing tasks without switching tools.
+
+2. **In-Memory Computing**:
+   One of Spark’s most distinguishing features is its ability to process data in memory.
+It minimizes the need to read and write to disk, making it much faster than traditional MapReduce systems, especially for iterative algorithms or interactive data analysis.
+
+3. **Scalability**:
+   Spark is designed to scale seamlessly from a single server to thousands of nodes.
+It works well with distributed systems like Kubernetes, making it an ideal choice for big data pipelines that require massive scalability.
+
+4. **Ease of Use**:
+   Spark provides an easy-to-use API in multiple languages, including **Scala**, 
+**Python (PySpark)**, **Java**, and **R**. This flexibility allows developers and data engineers to use the tools they are most comfortable with while building robust pipelines.
+
+5. **Fault Tolerance**:
+   Spark is resilient to failures and can recover data and computations using its 
+lineage graph. This built-in fault tolerance ensures that big data pipelines can run reliably across distributed environments, where failures are more common.
+
+6. **Optimized for Distributed Data**:
+   Spark can process massive datasets by splitting them across clusters and parallelizing the work.
+It handles data partitioning automatically, so large datasets can be processed in a highly efficient manner.
+
+### Spark in Big Data Pipelines
+
+With Spark, you can efficiently manage data workflows that:
+
+- Ingest raw data from multiple sources.
+- Process or transform the data in real-time or batch.
+- Store the final or intermediate results in formats like **Delta Lake** for further analysis or querying.
+
+### Spark's Ecosystem Components:
+- **Spark SQL**: Enables querying data using SQL syntax and is highly optimized for large-scale data queries.
+- **Spark Streaming**: Handles real-time data streams for continuous processing, making it suitable for building pipelines that require real-time analytics.
+- **MLlib**: Spark’s machine learning library that supports large-scale machine learning algorithms, making Spark pipelines suitable for AI/ML tasks.
+- **GraphX**: A library for graph-based computations that integrates with Spark for graph processing at scale.
+
+In this exercise, we will learn how to:
 
 - Read data from MinIO using Apache Spark.
-- Perform an aggregation (e.g., sum, count) on the data.
-- Save the aggregated results in **Delta Table** format back to MinIO.
+- Perform some analysis on the data.
+- Save the results in **Delta Table** format back to MinIO.
 
 
 ---
@@ -59,7 +98,7 @@ Here are some interesting analyses you can perform:
 Use Scala to calculate the stock price volatility over time and analyze how different types of events (Climate, Social, Governance) impact volatility.
 Visualize stock price fluctuations before, during, and after major ESG events.
 
-```scala
+```
 
 val esgEvents = df.filter($"event_type".isNotNull)
 val volatility = esgEvents.groupBy("event_type")
@@ -72,28 +111,35 @@ z.show(volatility)
 Analyze the correlation between impact factor (from ESG events) and the stock price changes.
 Determine if certain event types (Ex.: Governance events) have a more significant impact on stock prices than others.
 
-``` scala
+```
 
 val correlation = df.stat.corr("impact_factor", "close")
 println(s"Correlation between event severity and stock price: $correlation")
 ```
-### 3.2 Event Frequency and Stock Movement Analysis:
+### 3.3 Event Frequency and Stock Movement Analysis:
 
 Count the frequency of each event type and analyze how frequently different events occur and their average impact on stock price.
 You could further analyze whether a higher frequency of social events leads to more sustained stock price changes.
 
-``` scala
+```
 val eventFrequency = df.groupBy("event_type")
 .agg(count("event_type").as("frequency"), avg("impact_factor").as("avg_impact"))
 z.show(eventFrequency)
 ```
 
-## Step 5: Save Aggregated Results as Delta Table in MinIO
+### 3.4 DIY Monthly average stock price
 
-To save the data in Delta format back to MinIO, you need to configure Spark to write in Delta Lake format.
+Calculate the monthly average stock price for each stock and visualize the trend over time to identify any patterns or anomalies.
+Hint: 
+``` 
+val stockDataWithMonth = df.withColumn("month_year", date_format(col("date"), "yyyy-MM"))
+```
+
+
+## Step 4: Save Some Aggregated Results as Delta Lake Table
+
 Why Delta?
-
-Saving data in Delta format makes managing and working with large amounts of data: 
+Saving data in Delta Lake format makes managing and working with large amounts of data: 
 
 - easier
 - faster
@@ -102,26 +148,23 @@ Saving data in Delta format makes managing and working with large amounts of dat
 - benefit of time-travel (you can track changes and even go back to earlier versions of your data if needed)
 
 
-``` scala
+```
 
 // Save the aggregated results as Delta Table
-val stockPriceOverTime = df.select("date", "close")
+val stockPriceOverTime = df.select("date", "close","event_type")
 // saveAsTable so that we can use this later with Hive -> Trino
 stockPriceOverTime.write.format("delta").mode("overwrite").saveAsTable("yourNameStockPriceOverTime")
 ```
 
-This will store the results as a Delta Table in the specified MinIO path.
+## Step 6: Verify the Saved Data
 
-## Step 6: Verify the Saved Data in MinIO
-
-After saving the data, you can verify the output by using the %sql interpretor which will pick-up our Delta Table from
+After saving the data, you can verify the output by using the %sql interpretor which will pick-up our Delta Lake table from
 the metadata store
-``` scala
+```
 
 %sql
 select * from yourNameStockPriceOverTime limit 5
 ```
-
 
 ## Summary
 
@@ -129,7 +172,7 @@ In this exercise, we learned how to:
 
 - Configure Spark to read data from MinIO. 
 - Perform simple analysis using Spark’s DataFrame API.
-- Save the results as Delta format back to MinIO.
-- Verify the saved data in Delta format.
+- Save the results as Delta Lake format back to MinIO.
+- Verify the saved data.
 
 Happy coding with Apache Spark!

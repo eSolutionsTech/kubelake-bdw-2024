@@ -1,7 +1,8 @@
 # Exercise 1: Data Ingestion with Apache NiFi
 
 ### Objective:
-Use Apache NiFi to ingest data from a source (S3 bucket in our case), transform it, and store somewhere else(another S3 bucket in our case).
+Use Apache NiFi to ingest data from a source (S3 bucket in our case), transform it, and store the data in our platform
+(another S3 bucket in our case).
 
 [Nifi](https://nifi.dev1.kubelake.com)
 
@@ -19,13 +20,13 @@ Here are some key benefits of NiFi:
 5. **Extensible**: You can easily extend its capabilities with custom processors or scripts.
 
 In this exercise, let's see how to configure NiFi to read data from an MinIO bucket (S3-compatible), 
-perform minor modifications on JSON data, and write the processed data back to another MinIO bucket.
+perform minor modifications on the data, and write the processed data back to another MinIO bucket.
 
 The input data consists of random generated multi-line .json files with information about
-a certain stock in a day (lets say APPLE) and if in that day
+a certain stock in a day (lets say APPLE) and if in that day:
 
-- if there were any Events
-- the Event type (Social/Governance/Climate)
+- there were any significant Events
+- the Event type if there were any (Social/Governance/Climate)
 - the impact factor
 
 Example:
@@ -35,8 +36,8 @@ Example:
       "date": "2023-12-04",
       "open": 108.4,
       "high": 115.07,
-      "low": 105.15,
-      "close": 110.53,
+      "low": 100.15,
+      "close": 101.53,
       "volume": 1728881,
       "event": "Mass workforce strike",
       "event_type": "Social Event",
@@ -60,12 +61,12 @@ A day with no events would look like this
 !!! info "Fair Warning PSA"
       This exercise exceeds to a certain extent what is usually recommended to do with Nifi (Extract / Load).
       We are going to modify the data a bit (Transform) just to play around with Nifi's capabilities.
-      For Big Data volumes any transformation should be done outside Nifi (although even Nifi can scale as it runs in cluster mode)
+      For Big Data any transformation should be done outside Nifi (although even Nifi can scale as it runs in cluster mode)
 
 ### Exercise Goals:
 
-- Fetch JSON data from an bucket (.json files)
-- Split the files into individual json's
+- Fetch JSON data from an bucket (.json files).
+- Split the files into individual JSON's.
 - Modify the JSON data (e.g., add a new field or change a value).
 - Store the processed data into another bucket.
 
@@ -78,19 +79,23 @@ A day with no events would look like this
 2. Access a data source (data is already saved in MinIO, but we could also test a public API if we want).
 3. Basic knowledge of JSON format.
 
-### NiFi Overview
-The core component in NiFi is a **Processor**.
-A processor performs specific tasks like fetching data, modifying data, or writing data to a destination.
-NiFi provides a rich set of pre-built processors, so you won’t need to write any custom code.
+### NiFi Components Overview
+The core component in NiFi is a **Processor** (processors are like LEGO pieces we can combine).
+
+-  fetch data
+-  modify data
+-  writing data to a destination.
+
+Nifi offers pre-built processors (so you won’t need to write any custom code).
 
 In this exercise, we'll use the following NiFi processors:
 
 - **ListS3**: To list objects in an S3 bucket.
 - **FetchS3Object**: To retrieve the data from the bucket.
 - **SplitJson**: To split the .json files.
-- **UpdateAttribute**: To add or update metadata.
 - **JoltTransformJSON**: To perform minor modifications on the JSON data.
 - **PutS3Object**: To save the modified data to the MinIO bucket.
+- **Etc.**
 
 ### NiFi teacher pass-through DEMO
 [Nifi](https://nifi.dev1.kubelake.com)
@@ -101,7 +106,7 @@ In this exercise, we'll use the following NiFi processors:
 - Log into [Nifi](https://nifi.dev1.kubelake.com)
 - credentials : demo@kubelake.com - ask me for the password
 
-## Step 1: Create your own working environment 
+## Step 1: Very Important  -> Create your own working environment
 1. Drag and drop a new process group from the left (4th button to the right of the logo)
 2. Add you name to the process group name or whatever you want to name it (please do not interfere with other people's work)
 
@@ -145,7 +150,7 @@ In this exercise, we'll use the following NiFi processors:
 3. In **JoltTransformJSON**:
       - Set the **Jolt Specification** (Jolt spec) to a simple transformation. For example, you could add a new field:
 
-```json
+```
 [
    {
       "operation": "default",
@@ -183,7 +188,7 @@ In this exercise, we'll use the following NiFi processors:
 4. If for any reason you fail to get the running flow, you can drag and drop a template with the running flow from the
 left top part of the nifi interface (Template -> Drag and Drop -> Choose Demo Ingest)
 5. Then just go through the flow and alter the MinIO path and run the flow
-6. 
+
 ### Monitor Data Flow:
 
 1. Use NiFi’s built-in **Data Provenance** to track the data's journey from start to finish.
@@ -196,7 +201,7 @@ left top part of the nifi interface (Template -> Drag and Drop -> Choose Demo In
 1. Review the processed data in your MinIO bucket.
 - Log into [MinIO]( https://storage.dev1.kubelake.com)
 - credentials ->  demo@kubelake.com : ask me for the password
-2. Stop the NiFi flow when you’re finished (click right on the canvas and STOP)
+2. **Stop** the NiFi flow when you’re finished (click right on the canvas and STOP)
 
 ---
 
@@ -205,8 +210,8 @@ left top part of the nifi interface (Template -> Drag and Drop -> Choose Demo In
 In this exercise, we have (hopefully) learned how to:
 
 - Configure NiFi to interact with MinIO.
-- Use processors like **ListS3**, **FetchS3Object**, **JoltTransformJSON**, and **PutS3Object** to create a simple data pipeline.
-- Modify JSON data using the Jolt transformation.
-- Store the modified data in a new location.
+- Use processors like **ListS3**, **FetchS3Object**, **JoltTransformJSON**, and **PutS3Object** to create a simple data ingest pipeline.
+- Modify a little bit our data using the Jolt transformation.
+- Store the data in our data platform.
 
 Happy NiFi-ing!

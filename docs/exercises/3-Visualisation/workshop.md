@@ -20,7 +20,7 @@ In this plan, we will:
 ## Step 1: Visualizations in Zeppelin
 
 Zeppelin has built-in charting capabilities for basic visualizations.
-After running the aggregation or a query, switch the result to visualizations using Zeppelin's built-in tools (z.show)
+After running the aggregation or a query, switch the result to visualizations using Zeppelin's built-in tools (z.show).
 You can select from pie charts, bar charts, scatter plots, etc.
 
 After performing the aggregation:
@@ -28,9 +28,9 @@ Click on Bar Chart, Line Chart, or Pie Chart options on the Zeppelin result wind
 
 Let's visualise stock Price over Time (as a bar chart)
 
-```scala
+```
 
-val stockPriceOverTime = df.select("date", "close")
+val stockPriceOverTime = df.select("date", "close" ,"event_type")
 z.show(stockPriceOverTime)
 ```
 
