@@ -1,9 +1,9 @@
 # eSolutions
 
 ## Who are we?
-- [Lucian Neghina](https://www.linkedin.com/in/nflucian) ->  Head of Data Engineering // eSolutions
-
 - [Viorel Bibiloiu](https://www.linkedin.com/in/viorel-bibiloiu-383a17ab/) -> Big Data Architect // eSolutions
+ 
+- [Lucian Neghina](https://www.linkedin.com/in/nflucian) ->  Head of Data Engineering // eSolutions
 
 - [eSolutions](https://www.esolutions.tech/) -> a technology company developing integrated, complex and secure solutions, with a focus on improving the business processes that stand behind the software.
 

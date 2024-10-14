@@ -20,7 +20,7 @@ Here are some key benefits of NiFi:
 5. **Extensible**: You can easily extend its capabilities with custom processors or scripts.
 
 In this exercise, let's see how to configure NiFi to read data from an MinIO bucket (S3-compatible), 
-perform minor modifications on the data, and write the processed data back to another MinIO bucket.
+perform minor modifications on the data, and write the data back to another MinIO location.
 
 The input data consists of random generated multi-line .json files with information about
 a certain stock in a day (lets say APPLE) and if in that day:
@@ -41,7 +41,7 @@ Example:
       "volume": 1728881,
       "event": "Mass workforce strike",
       "event_type": "Social Event",
-      "impact_factor": -0.04
+      "impact_factor": -0.04 //This value represented the expected effect of the event on the stock price, either positive or negative as a procentage
       }..]
 
 A day with no events would look like this
@@ -55,7 +55,7 @@ A day with no events would look like this
       "volume": 3470925,
       "event": null,
       "event_type": null,
-      "impact_factor": 0
+      "impact_factor": 0 // This value represented the expected effect of the event on the stock price, either positive or negative as a procentage
       }..]
 
 !!! info "Fair Warning PSA"
@@ -68,7 +68,9 @@ A day with no events would look like this
 - Fetch JSON data from an bucket (.json files).
 - Split the files into individual JSON's.
 - Modify the JSON data (e.g., add a new field or change a value).
-- Store the processed data into another bucket.
+- Store the processed data into 2 locations
+- One location for archiving (after we add some metadata)
+- Another location for later processing but keeping the data as at the source (/bronze)
 
 ---
 
@@ -120,9 +122,9 @@ In this exercise, we'll use the following NiFi processors:
 3. In the **Properties** tab:
      - Set the **Bucket Name** to the name of the MinIO bucket (*datalake*)
      - Configure **Region** to match the region of your MinIO bucket (*EU Frankfurt*)
-     - Set your **MinIO Credentials** (select the *CredentialsProviderControllerService* already connected to MinIO).
+     - Set your **MinIO Credentials** (select the *MinioCredentialsProviderControllerService* already connected to MinIO).
      - Set the Endpoint Override URL because this processor usually connects to S3, but now we are using it to connect to MinIO (*http://minio.kubelake-storage*).
-     - Set the **Prefix** to where our files are (*ingest/esg_stock_data/*)
+     - Set the **Prefix** to where our files are (*ingest/stock_data/*)
 4. This processor will list all objects in the specified MinIO bucket.
 5. Click right to run it once and to run it again click right -> view state -> clear state, then you can run it again
    (this processor stores the timestamp of the read files so that we can keep it running forever and just read new or updated files)
@@ -163,7 +165,7 @@ In this exercise, we'll use the following NiFi processors:
 
 4. This will modify your JSON data by adding a new field called "newField" with the value "NiFi is awesome!".
 
-## Step 5: Store the Data in MinIO
+## Step 5: Store the archived Data in MinIO
 
 ### Configure PutS3Object Processor:
 
@@ -172,13 +174,26 @@ In this exercise, we'll use the following NiFi processors:
 3. Configure **PutS3Object** the same as **ListS3**:
      - Set the **Bucket** to *datalake*
      - Configure **Region** to *EU Paris* (or set it to Use 's3.region' Attribute)
-     - Set your **MinIO Credentials** to the *CredentialsProviderControllerService* 
+     - Set your **MinIO Credentials** to the *MinioCredentialsProviderControllerService* 
      - Set the Endpoint Override to *http://minio.kubelake-storage*.
-     - The **Object Key** will be different, set it to /bronze/{your_name_or_project_name}/2024-10-15/${UUID()}.json
+     - The **Object Key** will be different, set it to /archive/{your_name_or_project_name}/2024-10-15/${UUID()}.json
 
 ---
+## Step 6: Store the original Data in MinIO in another bucket
 
-## Step 6: Finalize and Run
+### Configure PutS3Object Processor:
+
+1. Drag and drop the **PutS3Object** processor onto the canvas.
+2. Connect the **original** relationship from **JoltTransformJSON** to **PutS3Object**.
+3. Configure **PutS3Object** the same as **ListS3**:
+    - Set the **Bucket** to *datalake*
+    - Configure **Region** to *EU Paris* (or set it to Use 's3.region' Attribute)
+    - Set your **MinIO Credentials** to the *MinioCredentialsProviderControllerService*
+    - Set the Endpoint Override to *http://minio.kubelake-storage*.
+    - The **Object Key** will be different, set it to /bronze/{your_name_or_project_name}/2024-10-15/${UUID()}.json
+
+---
+## Step 7: Finalize and Run
 
 ### Create Connections and Run:
 
@@ -211,7 +226,7 @@ In this exercise, we have (hopefully) learned how to:
 
 - Configure NiFi to interact with MinIO.
 - Use processors like **ListS3**, **FetchS3Object**, **JoltTransformJSON**, and **PutS3Object** to create a simple data ingest pipeline.
-- Modify a little bit our data using the Jolt transformation.
+- Modify a little bit our data.
 - Store the data in our data platform.
 
-Happy NiFi-ing!
+What did you think was the hardest part about Nifi?

@@ -80,65 +80,119 @@ In this exercise, we will learn how to:
 ## Step 2: Read Data from MinIO
 
 We can use Spark's `spark.read` method to load files from MinIO. 
+We will read the data we played with earlier.
 Our data is in JSON format so here's how we can read it into a Spark DataFrame:
 
 Scala Example:
 
 ```scala
 
-val df = spark.read.json("s3a://datalake/bronze/{your_name_or_project_name}/2024-10-15/*")
-z.show(df)
+val df = spark.read.option("multiLine", true).option("mode", "PERMISSIVE").json("s3a://datalake/bronze/{your_name_or_project_name}/2024-10-15/*")
+df.show(10)
 ```
 If you're using Python, the syntax is similar
 
 ## Step 3: Perform Data Analysis
 
-Here are some interesting analyses you can perform:
-### 3.1 Stock Price Volatility by ESG Event Type
-Use Scala to calculate the stock price volatility over time and analyze how different types of events (Climate, Social, Governance) impact volatility.
-Visualize stock price fluctuations before, during, and after major ESG events.
+Here are some interesting analyses you can test:
 
-```
 
-val esgEvents = df.filter($"event_type".isNotNull)
-val volatility = esgEvents.groupBy("event_type")
-.agg(stddev("close").as("price_volatility"))
-z.show(volatility)
-```
-
-### 3.2  Correlation Between Event Severity and Stock Price Impact:
-
-Analyze the correlation between impact factor (from ESG events) and the stock price changes.
-Determine if certain event types (Ex.: Governance events) have a more significant impact on stock prices than others.
-
-```
-
-val correlation = df.stat.corr("impact_factor", "close")
-println(s"Correlation between event severity and stock price: $correlation")
-```
-### 3.3 Event Frequency and Stock Movement Analysis:
+### 3.1 Event Frequency and Stock Movement Analysis:
 
 Count the frequency of each event type and analyze how frequently different events occur and their average impact on stock price.
 You could further analyze whether a higher frequency of social events leads to more sustained stock price changes.
 
-```
-val eventFrequency = df.groupBy("event_type")
-.agg(count("event_type").as("frequency"), avg("impact_factor").as("avg_impact"))
-z.show(eventFrequency)
-```
+Hint:
+You can group by event_type then count event_types as frequency and average of the impact_factor as average impact factor
 
-### 3.4 DIY Monthly average stock price
+??? success "Show Solution"
+      
+      ```
+      val eventFrequency = 
+      df
+      .groupBy("event_type")
+      .agg(count("event_type").as("frequency"), avg("impact_factor").as("avg_impact"))
+      z.show(eventFrequency)
+      ```
 
-Calculate the monthly average stock price for each stock and visualize the trend over time to identify any patterns or anomalies.
+### 3.2 DIY Monthly average stock price
+
+Calculate the monthly average stock price for each stock.
+
 Hint: 
 ``` 
 val stockDataWithMonth = df.withColumn("month_year", date_format(col("date"), "yyyy-MM"))
 ```
+??? success "Show Solution"
+      ```
+      val stockDataWithMonth = df.withColumn("month_year", date_format(col("date"), "yyyy-MM"))
+      val stockMonthlyAvg = stockDataWithMonth.groupBy("month_year")
+      .agg(avg("close").as("monthly_avg_close"))
+      .orderBy("month_year")
+      z.show(monthly_avg)
+      ```
+
+### 3.3  General Correlation Between Event Severity and Stock Price at Close
+
+??? success "What is Correlation?"
+
+    Correlation measures the strength and direction of the linear relationship between two variables.
+        Values close to +1: Strong positive correlation (as one variable increases, the other also increases).
+        Values close to -1: Strong negative correlation (as one variable increases, the other decreases).
+        Values close to 0: No or weak linear correlation (little to no linear relationship between the variables).
+
+Let's analyze the correlation between impact factor (from ESG events) and the stock price at close.
+```
+val correlation = df.stat.corr("impact_factor", "close")
+println(s"General correlation between event severity and stock price: $correlation")
+```
+
+### 3.4 DIY Determine if certain event types (Ex.: Governance events) have a more significant impact on stock prices than others.
+
+Steps: 
+
+- Calculate Stock Price Change (= the percentage change in the stock price using close and open prices)
+- Filter out rows where there are no ESG events (filter(col("event").isNotNull))
+- We're particularly interested in how the impact factor correlates with the price change
+- Group the data by event type (Governance, Climate, Social) and calculate the average price change, the average impact
+and calculate the correlation between the impact_factor and the price_change
+
+??? success "Show Solution"
+      ```         
+      val dfWithChange = df.withColumn("price_change", (col("close") - col("open")) / col("open") * 100)
+
+      val dfWithEvents = dfWithChange.filter(col("event").isNotNull)
+      
+      val correlation = dfWithEvents.stat.corr("impact_factor", "price_change")
+      
+      println(s"Correlation between ESG event impact factor and stock price change: $correlation")
+      
+      // Group by Event Type and Analyze Impact
+      val avgImpactByEventType = dfWithEvents.groupBy("event_type")
+      .agg(
+      avg("price_change").as("avg_price_change"),
+      avg("impact_factor").as("avg_impact_factor"),
+      corr("impact_factor", "price_change").as("correlation")
+      )
+      .orderBy(desc("correlation"))  // Order by the strength of the correlation
+      
+      z.show(avgImpactByEventType)
+      //closer to -1 suggests negative Governance Event are causing stock prices to drop. 
+      //closer to 0 suggests Social Events are likely not causing that much of a move in the price
+
+      ```
+### 3.4 Play with the data if you have any other ideas
 
 
 ## Step 4: Save Some Aggregated Results as Delta Lake Table
 
 Why Delta?
+
+Delta Lake is open source software that extends Parquet data (column-oriented data storage format) files with a file-based transaction log for
+**ACID** transactions and scalable metadata handling. 
+Delta Lake is fully compatible with Apache Spark APIs, and was developed for tight integration with Structured Streaming,
+allowing you to easily use a single copy of data for both batch and streaming operations and providing incremental processing at scale.
+
 Saving data in Delta Lake format makes managing and working with large amounts of data: 
 
 - easier
@@ -153,7 +207,7 @@ Saving data in Delta Lake format makes managing and working with large amounts o
 // Save the aggregated results as Delta Table
 val stockPriceOverTime = df.select("date", "close","event_type")
 // saveAsTable so that we can use this later with Hive -> Trino
-stockPriceOverTime.write.format("delta").mode("overwrite").saveAsTable("yourNameStockPriceOverTime")
+stockPriceOverTime.write.format("delta").mode("overwrite").saveAsTable("{yourName}GoldStockPrice")
 ```
 
 ## Step 6: Verify the Saved Data
@@ -163,7 +217,7 @@ the metadata store
 ```
 
 %sql
-select * from yourNameStockPriceOverTime limit 5
+select * from {yourName}GoldStockPrice limit 5
 ```
 
 ## Summary
@@ -175,4 +229,4 @@ In this exercise, we learned how to:
 - Save the results as Delta Lake format back to MinIO.
 - Verify the saved data.
 
-Happy coding with Apache Spark!
+What did you think is the hardest part about processing?

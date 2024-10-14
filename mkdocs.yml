@@ -10,6 +10,8 @@ markdown_extensions:
     - attr_list
     - md_in_html
     - admonition
+    - pymdownx.details
+    - pymdownx.superfences
 extra:
   social:
     - icon: fontawesome/brands/linkedin
