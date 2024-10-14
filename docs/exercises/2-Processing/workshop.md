@@ -116,7 +116,7 @@ You can group by event_type then count event_types as frequency and average of t
 
 ### 3.2 DIY Monthly average stock price_change
 
-Calculate the monthly average stock price change (as a procentage calculated between close and open).
+Calculate the monthly average stock price change (as a percentage calculated between close and open).
 
 Hint: 
 ``` 
@@ -210,7 +210,7 @@ stockPriceOverTime.write.format("delta").mode("overwrite").saveAsTable("{yourNam
 
 ## Step 6: Verify the Saved Data
 
-After saving the data, you can verify the output by using the %sql interpretor which will pick-up our Delta Lake table from
+After saving the data, you can verify the output by using the %sql interpreter which will pick-up our Delta Lake table from
 the metadata store
 ```
 

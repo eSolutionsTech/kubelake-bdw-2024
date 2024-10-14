@@ -26,7 +26,7 @@ You can select from pie charts, bar charts, scatter plots, etc.
 After performing the aggregation:
 Click on Bar Chart, Line Chart, or Pie Chart options on the Zeppelin result window.
 
-Let's visualise stock Price over Time (as a bar chart)
+Let's visualize stock Price over Time (as a bar chart)
 
 ```
 
