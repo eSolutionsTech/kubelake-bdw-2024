@@ -100,7 +100,6 @@ Here are some interesting analyses you can test:
 ### 3.1 Event Frequency and Stock Movement Analysis:
 
 Count the frequency of each event type and analyze how frequently different events occur and their average impact on stock price.
-You could further analyze whether a higher frequency of social events leads to more sustained stock price changes.
 
 Hint:
 You can group by event_type then count event_types as frequency and average of the impact_factor as average impact factor
@@ -115,24 +114,26 @@ You can group by event_type then count event_types as frequency and average of t
       z.show(eventFrequency)
       ```
 
-### 3.2 DIY Monthly average stock price
+### 3.2 DIY Monthly average stock price_change
 
-Calculate the monthly average stock price for each stock.
+Calculate the monthly average stock price change (as a procentage calculated between close and open).
 
 Hint: 
 ``` 
 val stockDataWithMonth = df.withColumn("month_year", date_format(col("date"), "yyyy-MM"))
+.withColumn("price_change", (col("close") - col("open")) / col("open") * 100)
+
 ```
 ??? success "Show Solution"
       ```
       val stockDataWithMonth = df.withColumn("month_year", date_format(col("date"), "yyyy-MM"))
-      val stockMonthlyAvg = stockDataWithMonth.groupBy("month_year")
-      .agg(avg("close").as("monthly_avg_close"))
+      val stockChangeMonthlyAvg = stockDataWithMonth.groupBy("month_year")
+      .agg(avg("price_change").as("monthly_avg_price_change"))
       .orderBy("month_year")
       z.show(monthly_avg)
       ```
 
-### 3.3  General Correlation Between Event Severity and Stock Price at Close
+### 3.3  General Correlation Between Event Severity and Stock Price Daily Change as a Procentage
 
 ??? success "What is Correlation?"
 
@@ -141,9 +142,10 @@ val stockDataWithMonth = df.withColumn("month_year", date_format(col("date"), "y
         Values close to -1: Strong negative correlation (as one variable increases, the other decreases).
         Values close to 0: No or weak linear correlation (little to no linear relationship between the variables).
 
-Let's analyze the correlation between impact factor (from ESG events) and the stock price at close.
+Let's analyze the correlation between impact factor (from ESG events) and the stock price change.
 ```
-val correlation = df.stat.corr("impact_factor", "close")
+val correlation = df.withColumn("price_change", (col("close") - col("open")) / col("open") * 100)
+.stat.corr("impact_factor", "close")
 println(s"General correlation between event severity and stock price: $correlation")
 ```
 
@@ -162,11 +164,7 @@ and calculate the correlation between the impact_factor and the price_change
       val dfWithChange = df.withColumn("price_change", (col("close") - col("open")) / col("open") * 100)
 
       val dfWithEvents = dfWithChange.filter(col("event").isNotNull)
-      
-      val correlation = dfWithEvents.stat.corr("impact_factor", "price_change")
-      
-      println(s"Correlation between ESG event impact factor and stock price change: $correlation")
-      
+
       // Group by Event Type and Analyze Impact
       val avgImpactByEventType = dfWithEvents.groupBy("event_type")
       .agg(
