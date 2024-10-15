@@ -173,7 +173,7 @@ In this exercise, we'll use the following NiFi processors:
 2. Connect the **split** relationship from **JoltTransformJSON** to **PutS3Object**.
 3. Configure **PutS3Object** the same as **ListS3**:
      - Set the **Bucket** to *datalake*
-     - Configure **Region** to *EU Paris* (or set it to Use 's3.region' Attribute)
+     - Configure **Region** to *EU Frankfurt* (or set it to Use 's3.region' Attribute)
      - Set your **MinIO Credentials** to the *MinioCredentialsProviderControllerService* 
      - Set the Endpoint Override to *http://minio.kubelake-storage*.
      - The **Object Key** will be different, set it to /archive/{your_name_or_project_name}/2024-10-15/${UUID()}.json
@@ -187,7 +187,7 @@ In this exercise, we'll use the following NiFi processors:
 2. Connect the **original** relationship from **JoltTransformJSON** to **PutS3Object**.
 3. Configure **PutS3Object** the same as **ListS3**:
     - Set the **Bucket** to *datalake*
-    - Configure **Region** to *EU Paris* (or set it to Use 's3.region' Attribute)
+    - Configure **Region** to *EU Frankfurt* (or set it to Use 's3.region' Attribute)
     - Set your **MinIO Credentials** to the *MinioCredentialsProviderControllerService*
     - Set the Endpoint Override to *http://minio.kubelake-storage*.
     - The **Object Key** will be different, set it to /bronze/{your_name_or_project_name}/2024-10-15/${UUID()}.json
