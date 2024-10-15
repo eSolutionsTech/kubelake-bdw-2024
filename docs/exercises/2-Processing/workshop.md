@@ -125,7 +125,8 @@ val stockDataWithMonth = df.withColumn("month_year", date_format(col("date"), "y
 
 ```
 ??? success "Show Solution"
-      ```
+     
+     ```
       val stockDataWithMonth = df.withColumn("month_year", date_format(col("date"), "yyyy-MM"))
       val stockChangeMonthlyAvg = stockDataWithMonth.groupBy("month_year")
       .agg(avg("price_change").as("monthly_avg_price_change"))
