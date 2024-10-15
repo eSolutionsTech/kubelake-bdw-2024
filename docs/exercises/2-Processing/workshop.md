@@ -161,9 +161,9 @@ Steps:
 and calculate the correlation between the impact_factor and the price_change
 
 ??? success "Show Solution"
+
       ```         
       val dfWithChange = df.withColumn("price_change", (col("close") - col("open")) / col("open") * 100)
-
       val dfWithEvents = dfWithChange.filter(col("event").isNotNull)
 
       // Group by Event Type and Analyze Impact
@@ -181,7 +181,6 @@ and calculate the correlation between the impact_factor and the price_change
 
       ```
 ### 3.4 Play with the data if you have any other ideas
-
 
 ## Step 4: Save Some Aggregated Results as Delta Lake Table
 
